@@ -1,9 +1,6 @@
 package com.challenge.truckManagement.entities;
-import com.challenge.truckManagement.DTOs.UserDTO;
-import com.challenge.truckManagement.DTOs.VehicleDTO;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

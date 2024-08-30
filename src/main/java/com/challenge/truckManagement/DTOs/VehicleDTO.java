@@ -5,9 +5,6 @@ import com.challenge.truckManagement.entities.Vehicle;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-import java.util.Date;
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

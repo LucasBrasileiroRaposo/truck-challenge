@@ -1,11 +1,9 @@
 package com.challenge.truckManagement.services;
 
 import com.challenge.truckManagement.DTOs.UserDTO;
-import com.challenge.truckManagement.DTOs.UserUpdateDTO;
 import com.challenge.truckManagement.DTOs.VehicleDTO;
 import com.challenge.truckManagement.DTOs.VehicleUpdateDTO;
 import com.challenge.truckManagement.entities.Client;
-import com.challenge.truckManagement.entities.User;
 import com.challenge.truckManagement.entities.UserRole;
 import com.challenge.truckManagement.entities.Vehicle;
 import com.challenge.truckManagement.repositories.VehicleRepository;
