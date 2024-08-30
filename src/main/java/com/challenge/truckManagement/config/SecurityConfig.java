@@ -33,6 +33,7 @@ public class SecurityConfig {
                                         .requestMatchers(HttpMethod.POST, "/users/**", "/vehicles/**").hasAuthority("ADMIN")
                                         .requestMatchers(HttpMethod.PATCH, "/users/**", "/vehicles/**").hasAuthority("ADMIN")
                                         .requestMatchers(HttpMethod.DELETE, "/users/**", "/vehicles/**").hasAuthority("ADMIN")
+                                        .requestMatchers(AUTH_WHITELIST).permitAll()
                                         .anyRequest().authenticated()
                         )
                         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -40,6 +41,13 @@ public class SecurityConfig {
                 );
 
     }
+
+    private static final String[] AUTH_WHITELIST = {
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml"
+    };
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

@@ -4,6 +4,10 @@ import com.challenge.truckManagement.DTOs.UserDTO;
 import com.challenge.truckManagement.DTOs.UserUpdateDTO;
 import com.challenge.truckManagement.services.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+@Tag(name = "Users Controller")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -28,6 +33,12 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
+    @Operation(summary = "Creates a User", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User created successfully"),
+            @ApiResponse(responseCode = "409", description = "User data violating unique DB constraint"),
+            @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!"),
+    })
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody @Validated UserDTO userDTO) {
 
@@ -43,10 +54,16 @@ public class UserController {
             return new ResponseEntity<>(userAlreadyExists.getMessage(),HttpStatus.CONFLICT);
         } catch (Exception e) {
             LOGGER.error("A unexpected error occurred, sorry, check the error's message and try again!");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @Operation(summary = "Get user by ID", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
+    })
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUser(@PathVariable("userId") String idStr) {
 
@@ -62,10 +79,15 @@ public class UserController {
             return new ResponseEntity<>(entityNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             LOGGER.error("A unexpected error occurred, sorry, check the error's message and try again!");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @Operation(summary = "Filter Users by parameters", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found"),
+            @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
+    })
     @GetMapping("/")
     public ResponseEntity<?> filterUsers(@RequestParam(required = false) String cpf,
                                          @RequestParam(required = false) String name,
@@ -83,11 +105,18 @@ public class UserController {
 
         } catch (Exception e) {
             LOGGER.error("A unexpected error occurred, sorry, check the error's message and try again!");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
+    @Operation(summary = "Update user data by ID", method = "PATCH")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation Succeeded"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "409", description = "User data violating unique DB constraint"),
+            @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
+    })
     @PatchMapping("/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable("userId") String id,@RequestBody @Validated UserUpdateDTO userPatchDTO) {
 
@@ -110,6 +139,13 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Update user password by ID", method = "PATCH")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation Succeeded"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "400", description = "User new password violates password pattern"),
+            @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
+    })
     @PatchMapping("/{userId}/newPassword")
     public ResponseEntity<?> updateUserPassword(@PathVariable("userId") String id,
                                                 @RequestBody JsonNode body) {
@@ -133,6 +169,13 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "add an vehicle to a user", method = "PATCH")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation Succeeded"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "400", description = "User id informed isn't from a Client"),
+            @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
+    })
     @PatchMapping("/{userId}/addVehicle")
     public ResponseEntity<?> addVehicleToClient(@PathVariable("userId") String id, @RequestBody List<String> vehicleIds) {
 
@@ -155,6 +198,13 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "remove a vehicle from user", method = "PATCH")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation Succeeded"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "400", description = "User id informed isn't from a Client"),
+            @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
+    })
     @PatchMapping("/{userId}/removeVehicle")
     public ResponseEntity<?> removeVehicleFromClient(@PathVariable("userId") String id, @RequestBody List<String> vehicleIds) {
 
@@ -178,6 +228,12 @@ public class UserController {
 
     }
 
+    @Operation(summary = "Delete user by ID", method = "DELETE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Operation Succeeded"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
+    })
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable("userId") String idStr){
 

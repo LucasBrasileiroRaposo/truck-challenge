@@ -3,6 +3,10 @@ package com.challenge.truckManagement.controllers;
 import com.challenge.truckManagement.DTOs.AuthenticationDTO;
 import com.challenge.truckManagement.config.TokenService;
 import com.challenge.truckManagement.entities.User;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Auth Controller")
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -27,6 +32,12 @@ public class AuthenticationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
 
+    @Operation(summary = "Authenticate an User", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle found"),
+            @ApiResponse(responseCode = "401", description = "Vehicle not found in database"),
+            @ApiResponse(responseCode = "400", description = "Login validation failed, probably username or password are not right,check the error's message and try again!")
+    })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Validated AuthenticationDTO authenticationDTO) {
 
@@ -44,9 +55,9 @@ public class AuthenticationController {
             return new ResponseEntity<>("Login successful!\n This is your token: " + token, HttpStatus.OK);
         } catch (UsernameNotFoundException e) {
             LOGGER.error("No User with this username found!");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            LOGGER.error("A unexpected error occurred, sorry, check the error's message and try again!");
+            LOGGER.error("\"Login validation failed, probably username or password are not right,check the error's message and try again!");
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 

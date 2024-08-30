@@ -4,6 +4,10 @@ import com.challenge.truckManagement.DTOs.VehicleDTO;
 import com.challenge.truckManagement.DTOs.VehicleUpdateDTO;
 import com.challenge.truckManagement.services.UserService;
 import com.challenge.truckManagement.services.VehicleService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -14,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Vehicles Controller")
 @RestController
 @RequestMapping("/vehicles")
 public class VehicleController {
@@ -26,6 +31,13 @@ public class VehicleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleController.class);
 
+    @Operation(summary = "Creates a new Vehicle", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Vehicle created successfully"),
+            @ApiResponse(responseCode = "409", description = "Vehicle data violating unique DB constraint"),
+            @ApiResponse(responseCode = "404", description = "Owner not found in database"),
+            @ApiResponse(responseCode = "500", description = "An unexpected error occurred, check the error's message and try again!")
+    })
     @PostMapping("/")
     public ResponseEntity<?> createVehicle(@RequestBody @Validated VehicleDTO vehicleDTO) {
 
@@ -44,10 +56,16 @@ public class VehicleController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             LOGGER.error("A unexpected error occurred, sorry, check the error's message and try again!");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @Operation(summary = "Gets Vehicle by ID", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle found"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found in database"),
+            @ApiResponse(responseCode = "500", description = "An unexpected error occurred, check the error's message and try again!")
+    })
     @GetMapping("/{vehicleId}")
     public ResponseEntity<?> getVehicleById(@PathVariable(value = "vehicleId") String vehicleId) {
 
@@ -66,6 +84,11 @@ public class VehicleController {
         }
     }
 
+    @Operation(summary = "Filters Vehicles by criteria", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicles filtered successfully"),
+            @ApiResponse(responseCode = "500", description = "An unexpected error occurred, check the error's message and try again!")
+    })
     @GetMapping("/")
     public ResponseEntity<?> filterVehicles(@RequestParam(required = false) String name,
                                             @RequestParam(required = false) Integer year,
@@ -83,10 +106,16 @@ public class VehicleController {
 
         } catch (Exception e) {
             LOGGER.error("A unexpected error occurred, sorry, check the error's message and try again!");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @Operation(summary = "Updates Vehicle by ID", method = "PATCH")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found in database"),
+            @ApiResponse(responseCode = "500", description = "An unexpected error occurred, check the error's message and try again!")
+    })
     @PatchMapping("/{vehicleId}")
     public ResponseEntity<?> updateVehicle(@PathVariable("vehicleId") String vehicleId, @RequestBody @Validated VehicleUpdateDTO vehicleUpdateDTO) {
 
@@ -106,6 +135,12 @@ public class VehicleController {
         }
     }
 
+    @Operation(summary = "Deletes Vehicle by ID", method = "DELETE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Vehicle deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found in database"),
+            @ApiResponse(responseCode = "500", description = "An unexpected error occurred, check the error's message and try again!")
+    })
     @DeleteMapping("/{vehicleId}")
     public ResponseEntity<?> deleteVehicle(@PathVariable("vehicleId") String vehicleId){
 

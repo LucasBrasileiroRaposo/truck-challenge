@@ -23,12 +23,16 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private Integer year;
 
+    @Column(nullable = false)
     private String brand;
 
+    @Column(nullable = false)
     private String category;
 
     @Column(unique= true)
