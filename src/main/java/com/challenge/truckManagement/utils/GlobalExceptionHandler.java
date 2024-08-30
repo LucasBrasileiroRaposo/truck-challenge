@@ -38,12 +38,12 @@ public class GlobalExceptionHandler {
         String errorDetails = "";
 
         if (exception.getCause() instanceof InvalidFormatException) {
-            InvalidFormatException ifx = (InvalidFormatException) exception.getCause();
-            if (ifx.getTargetType() != null && ifx.getTargetType().isEnum()) {
-                String fieldName = ifx.getPath().get(ifx.getPath().size() - 1).getFieldName();
-                String validValues = Arrays.toString(ifx.getTargetType().getEnumConstants());
+            InvalidFormatException invalidFormatException = (InvalidFormatException) exception.getCause();
+            if (invalidFormatException.getTargetType() != null && invalidFormatException.getTargetType().isEnum()) {
+                String fieldName = invalidFormatException.getPath().get(invalidFormatException.getPath().size() - 1).getFieldName();
+                String validValues = Arrays.toString(invalidFormatException.getTargetType().getEnumConstants());
                 errorDetails = String.format("Invalid enum value: '%s' for the field: '%s'. The value must be one of: %s.",
-                        ifx.getValue(), fieldName, validValues);
+                        invalidFormatException.getValue(), fieldName, validValues);
 
                 errors.put("error", errorDetails);
             }
