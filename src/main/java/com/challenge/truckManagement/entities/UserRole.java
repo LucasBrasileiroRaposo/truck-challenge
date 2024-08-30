@@ -1,4 +1,7 @@
-package com.challange.truckManagement.entities;
+package com.challenge.truckManagement.entities;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum UserRole {
 
@@ -11,7 +14,9 @@ public enum UserRole {
         this.roleName = roleName;
     }
 
+    @JsonValue
     public String getRoleName() {
         return roleName;
     }
+
 }

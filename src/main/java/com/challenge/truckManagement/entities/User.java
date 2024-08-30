@@ -1,4 +1,4 @@
-package com.challange.truckManagement.entities;
+package com.challenge.truckManagement.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter
 @Setter
-public abstract class User {
+public abstract class User implements UserDetails {
 
 
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -31,6 +31,7 @@ public abstract class User {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
 

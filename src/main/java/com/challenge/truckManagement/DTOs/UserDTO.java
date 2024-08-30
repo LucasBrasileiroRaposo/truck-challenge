@@ -1,10 +1,13 @@
-package com.challange.truckManagement.DTOs;
+package com.challenge.truckManagement.DTOs;
 
-import com.challange.truckManagement.entities.*;
+import com.challenge.truckManagement.entities.*;
+import com.challenge.truckManagement.entities.Admin;
+import com.challenge.truckManagement.entities.Client;
+import com.challenge.truckManagement.entities.UserRole;
+import com.challenge.truckManagement.entities.Vehicle;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,22 +20,32 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDTO {
 
-    @NotNull(message = "Email is required")
+    private String id;
+
+    @NotBlank(message = "Email is required")
     @Email(message = "The email provided is not on correct email format")
     @Column(unique = true)
     private String email;
 
-    @NotNull(message = "Password is required")
+    @NotBlank(message = "Password is required")
     @Size(min = 5, max = 50, message = "Password must have between 5 and 50 characters")
     private String password;
 
-    @NotNull(message = "Cpf is required")
+    @NotBlank(message = "Cpf is required")
     @Column(unique = true)
     @Size(message = "Cpf must have 11 digits",min = 11, max = 11)
+    @Pattern(
+            regexp = "\\d{11}",
+            message = "Cpf must have only digits!"
+    )
     private String cpf;
 
-    @NotNull(message = "Name is required")
+    @NotBlank(message = "Name is required")
     @Size(min = 3, max = 50, message = "Name must have between 3 and 50 characters")
+    @Pattern(
+            regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ\\s]+$",
+            message = "An name can't have digits!"
+    )
     private String name;
 
     @NotNull(message = "Role is required")
@@ -40,23 +53,15 @@ public class UserDTO {
 
     private List<Vehicle> vehicles;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date birthDate;
 
     private String address;
 
 
-    public UserDTO(Admin adminUser) {
-
-        this.email = adminUser.getEmail();
-        this.password = adminUser.getPassword();
-        this.cpf = adminUser.getCpf();
-        this.name = adminUser.getName();
-        this.role = adminUser.getRole();
-
-    }
-
     public UserDTO(Client clientUser) {
+        this.id = clientUser.getId();
         this.email = clientUser.getEmail();
         this.password = clientUser.getPassword();
         this.cpf = clientUser.getCpf();
@@ -67,14 +72,16 @@ public class UserDTO {
         this.vehicles = clientUser.getVehicles();
     }
 
-    public UserDTO(String email, String cpf, String name, UserRole role) {
+    public UserDTO(String id, String email, String cpf, String name, UserRole role) {
+        this.id = id;
         this.email = email;
         this.cpf = cpf;
         this.name = name;
         this.role = role;
     }
 
-    public UserDTO(String email, String cpf, String name, UserRole role, String address, Date birthDate, List<Vehicle> vehicles) {
+    public UserDTO(String id, String email, String cpf, String name, UserRole role, String address, Date birthDate, List<Vehicle> vehicles) {
+        this.id = id;
         this.email = email;
         this.cpf = cpf;
         this.name = name;
@@ -83,5 +90,10 @@ public class UserDTO {
         this.birthDate = birthDate;
         this.vehicles = vehicles;
     }
+
+    public UserDTO(String id, String email, String cpf, String name, UserRole role, String address, Date birthDate) {
+
+    }
+
 
 }
