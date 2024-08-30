@@ -34,8 +34,8 @@ public class AuthenticationController {
 
     @Operation(summary = "Authenticate an User", method = "POST")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Vehicle found"),
-            @ApiResponse(responseCode = "401", description = "Vehicle not found in database"),
+            @ApiResponse(responseCode = "200", description = "Login success"),
+            @ApiResponse(responseCode = "401", description = "Username not found"),
             @ApiResponse(responseCode = "400", description = "Login validation failed, probably username or password are not right,check the error's message and try again!")
     })
     @PostMapping("/login")
@@ -55,10 +55,10 @@ public class AuthenticationController {
             return new ResponseEntity<>("Login successful!\n This is your token: " + token, HttpStatus.OK);
         } catch (UsernameNotFoundException e) {
             LOGGER.error("No User with this username found!");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("No User with this username found or invalid password!", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            LOGGER.error("\"Login validation failed, probably username or password are not right,check the error's message and try again!");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            LOGGER.error("Login validation failed, probably username or password are not right,check the error's message and try again!");
+            return new ResponseEntity<>("Login validation failed, probably username or password are not right, try again!", HttpStatus.BAD_REQUEST);
         }
 
     }

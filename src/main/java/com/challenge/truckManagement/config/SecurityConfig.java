@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,14 +29,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .authorizeHttpRequests(authorize ->
-                                authorize
-                                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                                        .requestMatchers(HttpMethod.POST, "/users/**", "/vehicles/**").hasAuthority("ADMIN")
-                                        .requestMatchers(HttpMethod.PATCH, "/users/**", "/vehicles/**").hasAuthority("ADMIN")
-                                        .requestMatchers(HttpMethod.DELETE, "/users/**", "/vehicles/**").hasAuthority("ADMIN")
-                                        .requestMatchers(AUTH_WHITELIST).permitAll()
-                                        .anyRequest().authenticated()
+                                {
+                                    authorize
+                                            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                                            .requestMatchers(HttpMethod.POST, "/users/**", "/vehicles/**").hasAuthority("ADMIN")
+                                            .requestMatchers(HttpMethod.PATCH, "/users/**", "/vehicles/**").hasAuthority("ADMIN")
+                                            .requestMatchers(HttpMethod.DELETE, "/users/**", "/vehicles/**").hasAuthority("ADMIN")
+                                            .requestMatchers(AUTH_WHITELIST).permitAll()
+                                            .requestMatchers("/h2-console/**").permitAll()
+                                            .anyRequest().authenticated();
+                                }
                         )
+                        .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                         .build()
                 );
@@ -46,7 +51,8 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/v3/api-docs/**",
-            "/v3/api-docs.yaml"
+            "/v3/api-docs.yaml",
+
     };
 
     @Bean

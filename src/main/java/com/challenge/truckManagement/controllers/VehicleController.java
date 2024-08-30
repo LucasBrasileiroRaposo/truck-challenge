@@ -36,6 +36,7 @@ public class VehicleController {
             @ApiResponse(responseCode = "201", description = "Vehicle created successfully"),
             @ApiResponse(responseCode = "409", description = "Vehicle data violating unique DB constraint"),
             @ApiResponse(responseCode = "404", description = "Owner not found in database"),
+            @ApiResponse(responseCode = "403", description = "You must be a Admin to do this request"),
             @ApiResponse(responseCode = "500", description = "An unexpected error occurred, check the error's message and try again!")
     })
     @PostMapping("/")
@@ -64,6 +65,7 @@ public class VehicleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Vehicle found"),
             @ApiResponse(responseCode = "404", description = "Vehicle not found in database"),
+            @ApiResponse(responseCode = "403", description = "You must be authenticated to do this request"),
             @ApiResponse(responseCode = "500", description = "An unexpected error occurred, check the error's message and try again!")
     })
     @GetMapping("/{vehicleId}")
@@ -87,6 +89,7 @@ public class VehicleController {
     @Operation(summary = "Filters Vehicles by criteria", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Vehicles filtered successfully"),
+            @ApiResponse(responseCode = "403", description = "You must be authenticated to do this request"),
             @ApiResponse(responseCode = "500", description = "An unexpected error occurred, check the error's message and try again!")
     })
     @GetMapping("/")
@@ -114,6 +117,7 @@ public class VehicleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Vehicle updated successfully"),
             @ApiResponse(responseCode = "404", description = "Vehicle not found in database"),
+            @ApiResponse(responseCode = "403", description = "You must be a Admin to do this request"),
             @ApiResponse(responseCode = "500", description = "An unexpected error occurred, check the error's message and try again!")
     })
     @PatchMapping("/{vehicleId}")
@@ -139,6 +143,7 @@ public class VehicleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Vehicle deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Vehicle not found in database"),
+            @ApiResponse(responseCode = "403", description = "You must be a Admin to do this request"),
             @ApiResponse(responseCode = "500", description = "An unexpected error occurred, check the error's message and try again!")
     })
     @DeleteMapping("/{vehicleId}")

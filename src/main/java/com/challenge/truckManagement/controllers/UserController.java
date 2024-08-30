@@ -37,6 +37,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User created successfully"),
             @ApiResponse(responseCode = "409", description = "User data violating unique DB constraint"),
+            @ApiResponse(responseCode = "403", description = "You must be a Admin to do this request"),
             @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!"),
     })
     @PostMapping("/register")
@@ -62,6 +63,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User found"),
             @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "403", description = "You must be authenticated to do this request"),
             @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
     })
     @GetMapping("/{userId}")
@@ -86,6 +88,7 @@ public class UserController {
     @Operation(summary = "Filter Users by parameters", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User found"),
+            @ApiResponse(responseCode = "403", description = "You must be authenticated to do this request"),
             @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
     })
     @GetMapping("/")
@@ -115,6 +118,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Operation Succeeded"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "409", description = "User data violating unique DB constraint"),
+            @ApiResponse(responseCode = "403", description = "You must be a Admin to do this request"),
             @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
     })
     @PatchMapping("/{userId}")
@@ -144,6 +148,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Operation Succeeded"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "400", description = "User new password violates password pattern"),
+            @ApiResponse(responseCode = "403", description = "You must be a Admin to do this request"),
             @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
     })
     @PatchMapping("/{userId}/newPassword")
@@ -174,6 +179,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Operation Succeeded"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "400", description = "User id informed isn't from a Client"),
+            @ApiResponse(responseCode = "403", description = "You must be a Admin to do this request"),
             @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
     })
     @PatchMapping("/{userId}/addVehicle")
@@ -203,6 +209,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Operation Succeeded"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "400", description = "User id informed isn't from a Client"),
+            @ApiResponse(responseCode = "403", description = "You must be a Admin to do this request"),
             @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
     })
     @PatchMapping("/{userId}/removeVehicle")
@@ -232,6 +239,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Operation Succeeded"),
             @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "403", description = "You must be a Admin to do this request"),
             @ApiResponse(responseCode = "500", description = "A unexpected error occurred, sorry, check the error's message and try again!")
     })
     @DeleteMapping("/{userId}")
