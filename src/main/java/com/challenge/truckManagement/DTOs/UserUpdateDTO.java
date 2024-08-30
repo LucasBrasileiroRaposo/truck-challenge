@@ -1,6 +1,5 @@
 package com.challenge.truckManagement.DTOs;
 
-import com.challenge.truckManagement.entities.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;

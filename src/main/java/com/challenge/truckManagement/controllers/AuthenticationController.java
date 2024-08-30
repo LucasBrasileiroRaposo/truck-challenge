@@ -3,7 +3,6 @@ package com.challenge.truckManagement.controllers;
 import com.challenge.truckManagement.DTOs.AuthenticationDTO;
 import com.challenge.truckManagement.config.TokenService;
 import com.challenge.truckManagement.entities.User;
-import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
