@@ -13,7 +13,7 @@ public interface VehicleRepository extends JpaRepository <Vehicle, String>{
 
     @Query(value = "SELECT * FROM vehicles v WHERE " +
                   "(:name IS NULL OR LOWER(v.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND "+
-                  "(:year IS NULL OR v.year = :year) AND " +
+                  "(:year IS NULL OR v.p_year = :year) AND " +
                   "(:brand IS NULL OR LOWER(v.brand) LIKE LOWER(CONCAT('%', :brand, '%'))) AND " +
                   "(:category IS NULL OR LOWER(v.category) LIKE LOWER(CONCAT('%', :category, '%'))) AND " +
                   "(:licensePlate IS NULL OR LOWER(v.license_plate) LIKE LOWER(CONCAT('%', :licensePlate, '%'))) AND " +

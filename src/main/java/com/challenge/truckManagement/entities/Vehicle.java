@@ -26,7 +26,7 @@ public class Vehicle {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name= "p_year", nullable = false)
     private Integer year;
 
     @Column(nullable = false)
