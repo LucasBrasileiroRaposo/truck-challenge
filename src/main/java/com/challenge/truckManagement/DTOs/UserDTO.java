@@ -1,7 +1,5 @@
 package com.challenge.truckManagement.DTOs;
 
-import com.challenge.truckManagement.entities.*;
-import com.challenge.truckManagement.entities.Admin;
 import com.challenge.truckManagement.entities.Client;
 import com.challenge.truckManagement.entities.UserRole;
 import com.challenge.truckManagement.entities.Vehicle;
@@ -90,10 +88,4 @@ public class UserDTO {
         this.birthDate = birthDate;
         this.vehicles = vehicles;
     }
-
-    public UserDTO(String id, String email, String cpf, String name, UserRole role, String address, Date birthDate) {
-
-    }
-
-
 }

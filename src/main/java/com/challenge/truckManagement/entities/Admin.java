@@ -8,8 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
 import java.util.List;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
 @Entity(name = "admins")
@@ -21,10 +19,6 @@ public class Admin extends User{
 
     public Admin(UserDTO userDTO) {
         super(userDTO.getEmail(), userDTO.getPassword(), userDTO.getCpf(), userDTO.getName(), UserRole.ADMIN);
-    }
-
-    public Admin(User user) {
-        super(user.getEmail(), user.getPassword(), user.getCpf(), user.getName(), UserRole.ADMIN);
     }
 
     @Override
