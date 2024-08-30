@@ -26,27 +26,27 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
 
     @InjectMocks
-    private UserService userService;
+    UserService userService;
 
     @Mock
-    private VehicleService vehicleService;
+    VehicleService vehicleService;
 
     @Mock
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
-    private UserDTO defaultUserClientDTO;
+    UserDTO defaultUserClientDTO;
 
-    private UserDTO defaultUserClientDTOReturn;
+    UserDTO defaultUserClientDTOReturn;
 
-    private Client defaultClient1;
+    Client defaultClient1;
 
-    private UserDTO defaultUserAdminDTO;
+    UserDTO defaultUserAdminDTO;
 
-    private UserDTO defaultUserAdminDTOReturn;
+    UserDTO defaultUserAdminDTOReturn;
 
-    private Admin defaultAdmin;
+    Admin defaultAdmin;
 
-    private Vehicle vehicle;
+    Vehicle vehicle;
 
     @BeforeEach
     void setUp() {
